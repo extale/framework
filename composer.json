@@ -1,0 +1,30 @@
+{
+    "name": "extale/framework",
+    "description": "'PHP framework for REST API projects'",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "exhum4n",
+            "email": "exhum4n.dev@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7.4",
+        "../../symfony/http-foundation": "^5.1",
+        "../../vlucas/phpdotenv": "^4.1",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "../../symfony/var-dumper": "5.1.0",
+        "../../squizlabs/php_codesniffer": "^3.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Hooina\\": "src/Hooina/"
+        }
+    },
+    "files": [
+        "src/Hooina/Core/Helpers/app.php"
+    ]
+}
