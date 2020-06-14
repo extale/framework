@@ -1,50 +1,46 @@
 <?php
 
-/**
- * @noinspection
- *
- * PhpIncludeInspection
- * PhpUnhandledExceptionInspection
- */
-
 namespace Hooina\Http\Routes;
 
-use Hooina\Http\Routes\Builders\RouteBuilder;
-use Hooina\Http\Routes\Contracts\RouteReceiverContract;
-use Hooina\Http\Requests\Request;
+use Hooina\Interfaces\Http\Requests\RequestInterface;
 use Hooina\Http\Routes\Exceptions\RouteNotFoundException;
+use Hooina\Http\Routes\Factory\RouteFactory;
+use Hooina\Interfaces\Http\Routes\RouteInterface;
+use Hooina\Interfaces\Http\Routes\RouteReceiverInterface;
 
-class RouteReceiver implements RouteReceiverContract
+class RouteReceiver implements RouteReceiverInterface
 {
-    protected string $routesPath;
+    /**
+     * Current request
+     *
+     * @var RequestInterface $request
+     */
+    protected RequestInterface $request;
 
+    /**
+     * List of user created routes
+     *
+     * @var array $routes
+     */
     protected array $routes;
 
-    public function getRoute(Request $request): Route
+    /**
+     * Get requested route
+     *
+     * @return Route
+     *
+     * @throws RouteNotFoundException
+     */
+    public function getRoute(): RouteInterface
     {
-        $requestPath = $request->getRequestPath();
+        $requestPath = $this->request->getRequestPath();
+        $requestMethod = $this->request->getMethod();
 
-        $params = $this->routes[$requestPath][$request->getMethod()];
-
+        $params = $this->routes[$requestPath][$requestMethod];
         if (empty($params)) {
             throw new RouteNotFoundException($requestPath);
         }
 
-        return (new RouteBuilder(...$this->routes[$requestPath][$request->getMethod()]))->produce();
-    }
-
-    protected function getRoutes(): array
-    {
-        $routes = include_once $this->routesPath;
-
-        $list = [];
-
-        foreach ($routes as $index => $route) {
-            foreach ($route as $path => $params) {
-                $list[$path][$params['method']] = array_values($params);
-            }
-        }
-
-        return $list;
+        return (new RouteFactory(...$this->routes[$requestPath][$requestMethod]))->create();
     }
 }

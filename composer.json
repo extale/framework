@@ -1,6 +1,6 @@
 {
     "name": "extale/framework",
-    "description": "'PHP framework for REST API projects'",
+    "description": "The Extale framework",
     "license": "MIT",
     "authors": [
         {
@@ -11,7 +11,6 @@
     "minimum-stability": "dev",
     "require": {
         "php": "^7.4",
-        "symfony/http-foundation": "^5.1",
         "vlucas/phpdotenv": "^4.1",
         "ext-json": "*"
     },
@@ -24,7 +23,8 @@
             "Hooina\\": "src/Hooina/"
         },
         "files": [
-            "src/Hooina/Core/Helpers/app.php"
+            "src/Hooina/Core/Helpers/app.php",
+            "src/Hooina/Http/Helpers/http.php"
         ]
     }
 }

@@ -2,20 +2,21 @@
 
 namespace Hooina\Http\Requests;
 
-use Hooina\Http\Requests\Builders\RequestBuilder;
-use Hooina\Http\Requests\Contracts\RequestReceiverContract;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
+use Hooina\Http\Requests\Factory\RequestFactory;
+use Hooina\Interfaces\Http\Requests\RequestReceiverInterface;
+use Hooina\Http\Requests\Traits\Globals;
 
-class RequestReceiver implements RequestReceiverContract
+class RequestReceiver implements RequestReceiverInterface
 {
-    protected SymfonyRequest $request;
+    use Globals;
 
-    protected array $parameters;
-
-    protected string $basePath;
-
+    /**
+     * Receive request and create using factory
+     *
+     * @return Request
+     */
     public function getRequest(): Request
     {
-        return (new RequestBuilder($this->request, $this->parameters))->produce();
+        return (new RequestFactory(Request::class))->create($this->getRequestData());
     }
 }

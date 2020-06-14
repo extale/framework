@@ -1,18 +1,6 @@
 <?php
 
-if (function_exists('builder') === false) {
-    function builder(string $builder, array $arguments = [])
-    {
-        return (new $builder(...$arguments))->produce();
-    }
-}
-
-if (function_exists('response') === false) {
-    function response(array $content): Hooina\Http\Responses\Response
-    {
-        return new Hooina\Http\Responses\Response($content);
-    }
-}
+use Hooina\Interfaces\Core\ApplicationInterface;
 
 if (function_exists('class_name') === false) {
     function class_name(string $class): string
@@ -29,5 +17,19 @@ if (function_exists('env') === false) {
         }
 
         return $value;
+    }
+}
+
+if (function_exists('base_path') === false) {
+    function base_path(): string
+    {
+        return app()->getBasePath();
+    }
+}
+
+if (function_exists('app') === false) {
+    function app(): ApplicationInterface
+    {
+        return Hooina\Core\Application::getInstance();
     }
 }

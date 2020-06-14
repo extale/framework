@@ -2,19 +2,25 @@
 
 namespace Hooina\Http\Responses;
 
-use Hooina\Http\Responses\Contracts\ResponseContract;
+use Hooina\Interfaces\Http\Responses\ResponseInterface;
 
-class Response implements ResponseContract
+class Response implements ResponseInterface
 {
-    protected array $content;
+    protected $content;
 
-    public function __construct(array $content)
+    protected int $statusCode;
+
+    public function __construct($content, int $statusCode)
     {
         $this->content = $content;
+        $this->statusCode = $statusCode;
+
+        header('Content-Type: application/json');
+        http_response_code($statusCode);
     }
 
-    public function send()
+    public function send(): void
     {
-        return print_r(json_encode($this->content));
+        echo json_encode($this->content);
     }
 }
